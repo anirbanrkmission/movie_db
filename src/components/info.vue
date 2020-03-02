@@ -12,8 +12,8 @@
             outlined
           >
             <v-card-title>
-              <p style="color: green;">{{item.title}} | {{item.vote_average}}/10 | Reviewers: {{item.vote_count}} | 
-              Released On: {{item.release_date}}</p>
+              <p style="color: green;">{{item.title}} | {{item.vote_average}}/10 | Reviewers: {{item.vote_count}}
+              <br/>Released On: {{item.release_date}}</p>
               <v-spacer/>
               <v-chip
                 color="green accent-4"
