@@ -7,7 +7,7 @@
             <v-card-title class="headline">Movie Reviews</v-card-title>
             <v-card-text>
               <v-form ref="form" v-model="valid" :lazy-validation="lazy">
-                <v-text-field label="Name" v-model="feedback.name" required></v-text-field>
+                <v-text-field label="Name" v-model="feedback.name" @click="feedback.name = $store.getters.movie_name" required></v-text-field>
                 <v-text-field label="Review" v-model="feedback.review" :counter="150" required></v-text-field>
                 <v-slider v-model="feedback.rating" label="Rating" min="1" max="5" thumb-label></v-slider>
                 <v-checkbox
@@ -65,24 +65,7 @@ export default {
       //     }
       //   });
       // }
-
-      this.getData();
     },
-    getData() {
-      console.log('Name: ', this.feedback.name)
-      this.feedback.name = this.$store.getters.movie_name
-    },
-    validateName(movieName) {
-      var moviesName = this.feedbacks;
-      console.log("Movies: ", moviesName);
-      for (let mov of moviesName) {
-        if (mov.name == movieName) {
-          alert("Review on same movie exist.");
-          return false;
-        }
-      }
-      return true;
-    }
   },
 };
 </script>

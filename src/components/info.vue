@@ -8,7 +8,7 @@
             class="pa-3"
             elevation="5"
             min-height="700"
-            dark 
+            dark
             outlined
           >
             <v-card-title>
@@ -25,13 +25,25 @@
               <v-img height="300" width="350" :src="getImg(item.poster_path)"></v-img>{{item.overview}}
             </v-card-text>
             <v-card-actions>
-              <v-btn class="py-5" icon :id="ix" @click="likeMovie(ix)"><v-icon>mdi-heart</v-icon></v-btn>
-              <v-btn class="py-5" icon :id="ix" @click="reviewMovie(ix)"><v-icon>mdi-pencil</v-icon></v-btn>
+              <v-btn icon :id="ix" @click="likeMovie(ix)"><v-icon>mdi-heart</v-icon></v-btn>
+              <v-btn icon :id="ix" @click="reviewMovie(item)"><v-icon>mdi-pencil</v-icon></v-btn>
             </v-card-actions>
           </v-card>
         </v-col>
       </v-row>
-      
+      <v-btn
+            v-scroll="onScroll"
+            v-show="fab"
+            fab
+            dark
+            fixed
+            bottom
+            right
+            color="green accent-4"
+            @click="toTop"
+          >
+            <v-icon>mdi-chevron-up</v-icon>
+          </v-btn>
     </v-container>
   </v-app>
 </template>
@@ -86,6 +98,7 @@ export default {
         37,
       ],
       search: '',
+      fab: false,
     };
   },
   methods: {
@@ -115,6 +128,8 @@ export default {
       /* eslint: off */
       console.log('Review: ', item.title)
       this.$store.commit('change', item.title)
+      this.$emit('change', 'tab-2')
+      
     },
     searchMov() {
       console.log(this.search)
@@ -127,6 +142,14 @@ export default {
         this.items = response.data
       });
     },
+    onScroll (e) {
+      if (typeof window === 'undefined') return;
+      const top = window.pageYOffset ||   e.target.scrollTop || 0;
+      this.fab = top > 20;
+    },
+    toTop () {
+      this.$vuetify.goTo(0)
+    }
   }
 };
 </script>
