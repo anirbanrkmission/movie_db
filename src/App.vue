@@ -10,7 +10,7 @@
     </v-tabs>
     <v-tabs-items v-model="tab">
       <v-tab-item value="tab-1"><info @change="changeTab"/></v-tab-item>
-      <v-tab-item value="tab-2"><movie/></v-tab-item>
+      <v-tab-item value="tab-2"><movie :mov_name="mov_name"/></v-tab-item>
     </v-tabs-items>
   </v-app>
 </template>
@@ -32,12 +32,15 @@ export default {
   },
   data: () => ({
     tab: 'tab-1',
+    mov_name: '',
     //
   }),
   methods: {
-    changeTab(event) {
+    changeTab(event, name) {
       this.tab = event
-    }
+
+      this.mov_name = name
+    },
   }
 };
 </script>

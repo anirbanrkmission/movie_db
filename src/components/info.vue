@@ -128,8 +128,8 @@ export default {
       /* eslint: off */
       console.log('Review: ', item.title)
       this.$store.commit('change', item.title)
-      this.$emit('change', 'tab-2')
-      
+      this.$emit('change', 'tab-2', item.title)
+      // this.$emit('update', item.title)
     },
     searchMov() {
       console.log(this.search)

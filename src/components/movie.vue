@@ -7,9 +7,9 @@
             <v-card-title class="headline">Movie Reviews</v-card-title>
             <v-card-text>
               <v-form ref="form" v-model="valid" :lazy-validation="lazy">
-                <v-text-field label="Name" v-model="feedback.name" @click="feedback.name = $store.getters.movie_name" required></v-text-field>
-                <v-text-field label="Review" v-model="feedback.review" :counter="150" required></v-text-field>
-                <v-slider v-model="feedback.rating" label="Rating" min="1" max="5" thumb-label></v-slider>
+                <v-text-field label="Name" v-model="name" @click="name = mov_name" required></v-text-field>
+                <v-text-field label="Review" v-model="review" :counter="150" required></v-text-field>
+                <v-slider v-model="rating" label="Rating" min="1" max="5" thumb-label></v-slider>
                 <v-checkbox
                   v-model="checkbox"
                   :rules="[v => !!v || 'You must agree to continue!']"
@@ -30,14 +30,13 @@
 // const axios = require("axios");
 export default {
   name: "movie",
+  props: ['mov_name'],
   data() {
     return {
       feedbacks: [],
-      feedback: {
-        name: this.$store.getters.movie_name,
-        review: "",
-        rating: 1
-      },
+      name: this.mov_name,
+      review: "",
+      rating: 1,
       valid: true,
       nameRules: [
         v => !!v || "Name is required",
@@ -45,7 +44,7 @@ export default {
       ],
       select: null,
       checkbox: false,
-      lazy: false
+      lazy: true
     };
   },
   methods: {
@@ -53,19 +52,24 @@ export default {
       if (this.$refs.form.validate()) {
         console.log("Entered validate.")
       }
-      console.log("Feedback: ", this.feedback)
-      // if (this.validateName(this.feedback.name)) {
+      console.log("Feedback: ", this.name)
+      // if (this.validateName(this.name)) {
       //   axios({
       //     method: "POST",
       //     url: "http://localhost:8000/postReview",
       //     data: {
-      //       name: this.feedback.name,
-      //       review: this.feedback.review,
-      //       rating: this.feedback.rating
+      //       name: this.name,
+      //       review: this.review,
+      //       rating: this.rating
       //     }
       //   });
       // }
     },
   },
+  watch: {
+    name(val) {
+      console.log('Watch: ', val)
+    }
+  }
 };
 </script>
