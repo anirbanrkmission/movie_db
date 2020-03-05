@@ -7,9 +7,9 @@
             <v-card-title class="headline">Movie Reviews</v-card-title>
             <v-card-text>
               <v-form ref="form" v-model="valid" :lazy-validation="lazy">
-                <v-text-field label="Name" v-model="name" @click="name = mov_name" required></v-text-field>
+                <v-text-field label="Click to Review Movie" v-model="name" @click="changeMovNameId(mov_id)" required></v-text-field>
                 <v-text-field label="Review" v-model="review" :counter="150" required></v-text-field>
-                <v-slider v-model="rating" label="Rating" min="1" max="5" thumb-label></v-slider>
+                <v-slider v-model="rating" label="Rating" min="1" max="10" thumb-label ticks="always"></v-slider>
                 <v-checkbox
                   v-model="checkbox"
                   :rules="[v => !!v || 'You must agree to continue!']"
@@ -27,14 +27,14 @@
 </template>
 
 <script>
-// const axios = require("axios");
+const axios = require("axios");
 export default {
   name: "movie",
-  props: ['mov_name'],
+  props: ['mov_id'],
   data() {
     return {
       feedbacks: [],
-      name: this.mov_name,
+      name: '',
       review: "",
       rating: 1,
       valid: true,
@@ -53,23 +53,38 @@ export default {
         console.log("Entered validate.")
       }
       console.log("Feedback: ", this.name)
-      // if (this.validateName(this.name)) {
-      //   axios({
-      //     method: "POST",
-      //     url: "http://localhost:8000/postReview",
-      //     data: {
-      //       name: this.name,
-      //       review: this.review,
-      //       rating: this.rating
-      //     }
-      //   });
-      // }
+      
+      axios({
+        method: "POST",
+        url: 'https://api.themoviedb.org/3/movie/'+ this.mov_id +'/rating?api_key=8e0015628a213a97ac3775e77c598429',
+        data: {
+          value: this.rating
+        },
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded'
+        }
+      }).catch(
+        (err) => {
+          console.log(err.message)
+        }
+      );
     },
+    changeMovNameId(id) {
+      this.name = axios.get('https://api.themoviedb.org/3/movie/'+id+'?api_key=8e0015628a213a97ac3775e77c598429&language=en-US')
+      .then(
+        response => {
+          this.name = response.data.title
+        });
+        // this.validate()
+    }
   },
   watch: {
     name(val) {
       console.log('Watch: ', val)
     }
+  },
+  mounted() {
+    this.changeMovNameId(this.mov_id)
   }
 };
 </script>

@@ -2,8 +2,8 @@
   <v-app>
     <v-container fluid>
       <v-text-field v-model="search" label="search" @input="searchMov"></v-text-field>
-      <v-row no-gutters>
-        <v-col cols="6" v-for="(item, ix) in this.items.results" :key="ix">
+      <v-row no-gutters v-if="items">
+        <v-col cols="6" v-for="(item, ix) in items.results" :key="ix">
           <v-card 
             class="pa-3"
             elevation="5"
@@ -54,7 +54,7 @@ export default {
   name: 'info',
   data() {
     return {
-      items: this.getData(),
+      items: [],
       movie_genres: [
         "Action",
         "Adventure",
@@ -101,6 +101,9 @@ export default {
       fab: false,
     };
   },
+  mounted () {
+    this.getData();
+  },
   methods: {
     getData() {
       axios
@@ -109,6 +112,7 @@ export default {
         )
         .then(response => {
           this.items = response.data;
+          console.log('Response: ', response.data)
           // console.log(this.items.page)
         });
     },
@@ -128,7 +132,8 @@ export default {
       /* eslint: off */
       console.log('Review: ', item.title)
       this.$store.commit('change', item.title)
-      this.$emit('change', 'tab-2', item.title)
+      this.$emit('change', 'tab-2', item.id)
+      console.log('ID: ', item.id)
       // this.$emit('update', item.title)
     },
     searchMov() {

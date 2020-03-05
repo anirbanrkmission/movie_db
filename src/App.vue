@@ -10,7 +10,7 @@
     </v-tabs>
     <v-tabs-items v-model="tab">
       <v-tab-item value="tab-1"><info @change="changeTab"/></v-tab-item>
-      <v-tab-item value="tab-2"><movie :mov_name="mov_name"/></v-tab-item>
+      <v-tab-item value="tab-2"><movie :mov_id="mov_id"/></v-tab-item>
     </v-tabs-items>
   </v-app>
 </template>
@@ -28,18 +28,21 @@ export default {
     tab (val) {
       // this.changeTab(val)
       console.log(val);
+    },
+    mov_id (val) {
+      console.log('ID App.vue: ', val)
     }
   },
   data: () => ({
     tab: 'tab-1',
-    mov_name: '',
+    mov_id: null,
     //
   }),
   methods: {
-    changeTab(event, name) {
+    changeTab(event, id) {
       this.tab = event
 
-      this.mov_name = name
+      this.mov_id = id
     },
   }
 };
